@@ -14,7 +14,7 @@ from bs4 import BeautifulSoup
 from ebooklib import epub
 
 # How many articles to pull per feed
-MAX_ARTICLES_PER_FEED = 5
+MAX_ARTICLES_PER_FEED = 10
 
 # Request timeout in seconds
 TIMEOUT = 15
@@ -31,19 +31,14 @@ SMTP_PORT      = 587
 
 FEEDS = [
     # ── Bulgarian ──────────────────────────────
-#    {
-#        "name": "БНР Новини",
-#        "url": "https://bnr.bg/radiobulgaria/rss/news",   # updated URL
-#        "lang": "bg",
-#    },
+   {
+       "name": "БТА",
+       "url": "https://www.bta.bg/bg/rss/free",
+       "lang": "bg",
+   },
     {
         "name": "Mediapool",
-        "url": "https://mediapool.bg/rss",                # updated URL (no www, no .xml)
-        "lang": "bg",
-    },
-    {
-        "name": "Dnevnik",
-        "url": "https://www.dnevnik.bg/rss/",
+        "url": "https://mediapool.bg/rss",
         "lang": "bg",
     },
     {
@@ -53,26 +48,26 @@ FEEDS = [
     },
 
     # ── English ────────────────────────────────
-    {
-        "name": "BBC News",
-        "url": "http://feeds.bbci.co.uk/news/rss.xml",
-        "lang": "en",
-    },
+    # {
+    #     "name": "BBC News",
+    #     "url": "http://feeds.bbci.co.uk/news/rss.xml",
+    #     "lang": "en",
+    # },
 #    {
 #        "name": "AP News",
 #        "url": "https://rsshub.app/apnews/topics/apf-topnews",  # Reuters killed their RSS; AP is a solid replacement
 #        "lang": "en",
 #    },
-    {
-        "name": "The Guardian",
-        "url": "https://www.theguardian.com/world/rss",
-        "lang": "en",
-    },
-    {
-        "name": "Ars Technica",
-        "url": "https://feeds.arstechnica.com/arstechnica/index",
-        "lang": "en",
-    },
+#     {
+#         "name": "The Guardian",
+#         "url": "https://www.theguardian.com/world/rss",
+#         "lang": "en",
+#     },
+#     {
+#         "name": "Ars Technica",
+#         "url": "https://feeds.arstechnica.com/arstechnica/index",
+#         "lang": "en",
+#     },
 ]
 
 
