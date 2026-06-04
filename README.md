@@ -1,38 +1,44 @@
-# 📰 Morning News → Kindle
+# Fetch morning news and send to Kindle
 
-Fetches Bulgarian and English news via RSS, scrapes full article text,
-and packages everything into an EPUB you can read on your Kindle.
+Fetches the latest news via RSS, scrapes the text, packages everything into an EPUB, and sends it to your Kindle via email (could be configured for other e-ink devices).
 
 ---
 
-## Quick start
+## The idea
+I wanted to:
+1) Read for the first hour or so in the morning as opposed to reaching for the phone
+2) Read the latest news
 
-```bash
-# 1. Install dependencies
-pip install requests beautifulsoup4 ebooklib feedparser lxml
+That's why I thought I could send the news to my Kindle.
+The e-reader screen does not have the negative effect on your body like the phone.
+Also, the phone always makes you open other apps unvoluntarily.
 
-# 2. Run it
-python news_to_epub.py
+---
+
+## Usage
+
+### Prerequisites - Python virtual env
+```
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
 ```
 
+### Create EPUB with latest news
+```
+python news-to-epub.py
+```
 An `morning_news_YYYY-MM-DD.epub` file will appear in the same folder.
 
----
+### Send to Kindle via mail
 
-## Send to Kindle automatically
+#### Prerequisites
+1. Find your Kindle email - https://www.amazon.com/sendtokindle/email
+2. Create Gmail App Password - https://support.google.com/mail/answer/185833?hl=en
+3. Add the Gmail email to the "Approved Personal Document E-mail List", located at the Kindle Preferences page from step 1.
 
-Amazon lets you email documents to your Kindle.
-
-### One-time setup
-1. Go to **Manage Your Content and Devices** → **Preferences** → **Personal Document Settings**
-2. Note your `@kindle.com` address
-3. Add your sender Gmail address to the **Approved Personal Document E-mail List**
-4. Create a Gmail **App Password** (Google Account → Security → 2-Step Verification → App Passwords)
-
-### Configure the script
-Set environment variables (don't hard-code passwords in source!):
-
-```bash
+#### Set environment variables
+```
 export KINDLE_EMAIL="yourname@kindle.com"
 export SENDER_EMAIL="you@gmail.com"
 export SENDER_PASSWORD="your-gmail-app-password"
@@ -40,33 +46,31 @@ export SENDER_PASSWORD="your-gmail-app-password"
 
 Then run with `--send`:
 
-```bash
-python news_to_epub.py --send
+```
+python news-to-epub.py --send
 ```
 
 ---
 
-## Automate with cron (runs every morning at 6 AM)
+## Automate with cron (e.g. every morning at 8 AM)
 
-```bash
+```
 crontab -e
 ```
 
 Add this line:
 
 ```
-0 6 * * * cd /path/to/this/folder && python news_to_epub.py --send
+0 8 * * * cd /path/to/this/folder && python news-to-epub.py --send
 ```
-
-Or on Windows, use **Task Scheduler**.
 
 ---
 
 ## Customizing news sources
 
-Edit the `FEEDS` list in `news_to_epub.py`. Each entry is a dict:
+Edit the `FEEDS` list in `news-to-epub.py`. Each entry is a dict:
 
-```python
+```
 {
     "name": "My Source",
     "url":  "https://example.com/rss.xml",
@@ -85,37 +89,9 @@ Any RSS or Atom feed works. Good Bulgarian sources to consider:
 
 ```
 morning_news/
-├── news_to_epub.py   # main script
+├── news-to-epub.py   # main script
 └── README.md
 ```
 
 EPUBs are saved alongside the script by default.
 Change `OUTPUT_DIR` in the script to use a different folder.
-
----
-
-## Dependencies
-
-| Package | Purpose |
-|---|---|
-| `feedparser` | Parse RSS/Atom feeds |
-| `requests` | HTTP requests |
-| `beautifulsoup4` | HTML scraping & cleanup |
-| `lxml` | Fast HTML/XML parser (used by BS4) |
-| `ebooklib` | Build EPUB files |
-
-All are installable with `pip` and have permissive licenses.
-
----
-
-"""
-morning\_news.py — Fetch Bulgarian & English news and pack them into an EPUB
-for reading on Kindle.
-
-Usage:
-    python news_to_epub.py                 # builds today's digest
-    python news_to_epub.py --send          # also emails it to your Kindle
-
-Dependencies:
-    pip install requests beautifulsoup4 ebooklib feedparser lxml
-"""
